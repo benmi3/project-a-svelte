@@ -2,6 +2,8 @@
 	import { page } from '$app/stores';
 	import logo from '$lib/images/svelte-logo.svg';
 	import github from '$lib/images/github.svg';
+	import { user } from '../auth/auth';
+	import Authguard from '../auth/Authguard.svelte';
 </script>
 
 <header>
@@ -25,6 +27,37 @@
 			<li aria-current={$page.url.pathname.startsWith('/sverdle') ? 'page' : undefined}>
 				<a href="/sverdle">Sverdle</a>
 			</li>
+			<Authguard>
+				<span slot="authed">
+					<li
+						aria-current={$page.url.pathname.startsWith('/sverdle')
+							? 'page'
+							: undefined}
+					>
+						<a href="/about">Proof of Authentication</a>
+					</li>
+					<button on:click={() => ($user = false)}>Sign Out</button>
+				</span>
+				<span slot="not_authed">
+					<li
+						aria-current={$page.url.pathname.startsWith('/sverdle')
+							? 'page'
+							: undefined}
+					>
+						<a href="/about">Proof of no Authentication</a>
+					</li>
+					<button on:click={() => ($user = true)}>Sign In</button>
+				</span>
+				<span>
+					<li
+						aria-current={$page.url.pathname.startsWith('/sverdle')
+							? 'page'
+							: undefined}
+					>
+						<a href="/about">Inside the authguard, but will always show</a>
+					</li>
+				</span>
+			</Authguard>
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
 			<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
